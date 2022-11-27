@@ -68,7 +68,8 @@ public class LembreteService {
 
     @Transactional(readOnly = true)
     public List<TrazerLembretesDto> listarLembretes() {
-        return lembreteRepository.findAllByUser(authService.authenticated()).stream().map(TrazerLembretesDto::new).collect(Collectors.toList());
+        return   lembreteRepository.findAllByUser(authService.authenticated()).stream().sorted(new Lembrete()).map(TrazerLembretesDto::new).collect(Collectors.toList());
+
     }
 
 
@@ -76,6 +77,7 @@ public class LembreteService {
 
 
     private Lembrete copiarDtoParaEntidade(Lembrete lembrete, InserirLembreteDto dto) {
+        log.info("Data vencimento {}",dto.getDataVencimento());
         lembrete.setUser(authService.authenticated());
         lembrete.setTitulo(dto.getTitulo());
         lembrete.setMensagem(dto.getMensagem());

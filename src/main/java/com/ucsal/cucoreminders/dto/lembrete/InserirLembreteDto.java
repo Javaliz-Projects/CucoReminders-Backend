@@ -16,7 +16,6 @@ public class InserirLembreteDto {
     @NotBlank(message = "Campo requerido.")
     @Size(min = 5,max = 100,message = "O corpo da mensagem precisa estar entre 5 e 100 letras")
     private String mensagem;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     @NotNull(message =  "Campo requerido")
     @FutureOrPresent(message = "A data so pode ser presente ou futuro")
     private LocalDateTime dataVencimento;
