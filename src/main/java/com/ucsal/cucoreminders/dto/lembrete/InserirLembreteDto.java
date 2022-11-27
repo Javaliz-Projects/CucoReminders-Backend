@@ -18,6 +18,7 @@ public class InserirLembreteDto {
     private String mensagem;
     @NotNull(message =  "Campo requerido")
     @FutureOrPresent(message = "A data so pode ser presente ou futuro")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataVencimento;
 
 
