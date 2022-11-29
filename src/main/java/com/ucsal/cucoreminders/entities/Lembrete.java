@@ -19,6 +19,7 @@ public class Lembrete implements Comparator<Lembrete> {
     private String titulo;
     @Column(columnDefinition = "TEXT")
     private String mensagem;
+    private Integer prioridade;
 
     public Lembrete() {
     }
@@ -70,6 +71,12 @@ public class Lembrete implements Comparator<Lembrete> {
 
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
+    }
+    public Integer getPrioridade() {
+        return prioridade;
+    }
+    public void setPrioridade(Integer prioridade) {
+        this.prioridade = prioridade;
     }
 
 

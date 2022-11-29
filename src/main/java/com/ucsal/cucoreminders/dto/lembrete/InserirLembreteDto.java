@@ -2,9 +2,11 @@ package com.ucsal.cucoreminders.dto.lembrete;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ucsal.cucoreminders.entities.Lembrete;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class InserirLembreteDto {
 
@@ -16,6 +18,10 @@ public class InserirLembreteDto {
     @NotBlank(message = "Campo requerido.")
     @Size(min = 5,max = 100,message = "O corpo da mensagem precisa estar entre 5 e 100 letras")
     private String mensagem;
+    @NotNull(message = "Campo precisa ser inteiro.")
+    @Min(value = 1,message = "O valor precisa ser maior que 0.")
+    @Max(value = 9,message = "O valor precisa ser menor que 10.")
+    private Integer prioridade;
     @NotNull(message =  "Campo requerido")
     @FutureOrPresent(message = "A data so pode ser presente ou futuro")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
@@ -61,5 +67,12 @@ public class InserirLembreteDto {
 
     public void setDataVencimento(LocalDateTime dataVencimento) {
         this.dataVencimento = dataVencimento;
+    }
+
+    public Integer getPrioridade() {
+        return prioridade;
+    }
+    public void setPrioridade(Integer prioridade) {
+        this.prioridade = prioridade;
     }
 }

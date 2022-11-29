@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
-    private Set<Lembrete> lembretes;
+    private List<Lembrete> lembretes;
 
     public User() {
     }
@@ -40,7 +41,7 @@ public class User implements UserDetails {
         return roles;
     }
 
-    public Set<Lembrete> getLembretes() {
+    public List<Lembrete> getLembretes() {
         return lembretes;
     }
 

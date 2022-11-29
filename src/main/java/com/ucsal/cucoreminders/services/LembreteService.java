@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,8 +40,8 @@ public class LembreteService {
     @Transactional
     public void atualizarLembrete(Long lembreteId, AtualizarLembreteDto dto) {
         var user = authService.authenticated();
-        if (user.getLembretes().stream().noneMatch(x-> Objects.equals(x.getId(), lembreteId))){
-            throw  new ForbiddenException("Você não pode atualizar um lembrete que não é seu.");
+        if (user.getLembretes().stream().noneMatch(x -> Objects.equals(x.getId(), lembreteId))) {
+            throw new ForbiddenException("Você não pode atualizar um lembrete que não é seu.");
         }
         try {
             var lembrete = atualizarAuxiliar(lembreteId, dto);
@@ -53,7 +52,7 @@ public class LembreteService {
     }
 
     public void deletarLembrete(Long lembreteId) {
-        log.info("lembreta para ser deletado {}",lembreteId);
+        log.info("lembrete para ser deletado {}", lembreteId);
         lembreteRepository.findById(lembreteId).orElseThrow(() -> new ResourceNotFoundException("Lembrete não encontrado"));
         try {
             var isFromCurrentUser = authService.authenticated().getLembretes().stream().anyMatch(x -> x.getId() == lembreteId);
@@ -68,8 +67,16 @@ public class LembreteService {
 
     @Transactional(readOnly = true)
     public List<TrazerLembretesDto> listarLembretes() {
-        return   lembreteRepository.findAllByUser(authService.authenticated()).stream().sorted(new Lembrete()).map(TrazerLembretesDto::new).collect(Collectors.toList());
-
+        return lembreteRepository
+                .findAllByUser(authService.authenticated())
+                .stream()
+                .sorted(new Lembrete())
+                .sorted(Comparator
+                        .comparingInt(Lembrete::getPrioridade)
+                        .reversed())
+                .map(TrazerLembretesDto::new)
+                .collect(Collectors
+                        .toList());
     }
 
 
@@ -77,11 +84,12 @@ public class LembreteService {
 
 
     private Lembrete copiarDtoParaEntidade(Lembrete lembrete, InserirLembreteDto dto) {
-        log.info("Data vencimento {}",dto.getDataVencimento());
+        log.info("Data vencimento {}", dto.getDataVencimento());
         lembrete.setUser(authService.authenticated());
         lembrete.setTitulo(dto.getTitulo());
         lembrete.setMensagem(dto.getMensagem());
         lembrete.setTimeSchedule(mapearTimeSchedule(dto.getDataVencimento()));
+        lembrete.setPrioridade(dto.getPrioridade());
         return lembrete;
     }
 
