@@ -96,6 +96,7 @@ public class LembreteService {
 
     private Lembrete atualizarAuxiliar(Long lembreteId, AtualizarLembreteDto dto) {
         Lembrete lembrete = lembreteRepository.findById(lembreteId).orElseThrow(() -> new ResourceNotFoundException("Lembrete nao encontrado"));
+        lembrete.setPrioridade(dto.getPrioridade() == null ? lembrete.getPrioridade() : dto.getPrioridade());
         lembrete.setTitulo(dto.getTitulo() == null || dto.getTitulo().isEmpty() ? lembrete.getTitulo() : dto.getTitulo());
         lembrete.setMensagem(dto.getMensagem() == null || dto.getMensagem().isEmpty() ? lembrete.getMensagem() : dto.getMensagem());
         var timeSchedule = lembrete.getTimeSchedule();
