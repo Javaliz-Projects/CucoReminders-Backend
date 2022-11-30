@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 
 @AllArgsConstructor
@@ -17,15 +20,15 @@ public class TrazerLembretesDto {
     private Long id;
     private String titulo;
     private String mensagem;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime dataVencimento;
+    private Long dataVencimento;
     private Integer prioridade;
 
     public TrazerLembretesDto(Lembrete lembreteEntity) {
+        ZonedDateTime zdt = ZonedDateTime.of(lembreteEntity.getTimeSchedule().getDueDate(), ZoneId.systemDefault());
         id = lembreteEntity.getId();
         titulo = lembreteEntity.getTitulo();
         mensagem = lembreteEntity.getMensagem();
-        dataVencimento = lembreteEntity.getTimeSchedule().getDueDate();
+        dataVencimento = zdt.toInstant().toEpochMilli();
         prioridade = lembreteEntity.getPrioridade();
     }
 
