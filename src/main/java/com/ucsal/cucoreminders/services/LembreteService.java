@@ -10,6 +10,7 @@ import com.ucsal.cucoreminders.services.exceptions.ForbiddenException;
 import com.ucsal.cucoreminders.services.exceptions.ResourceNotFoundException;
 import com.ucsal.cucoreminders.services.exceptions.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -90,6 +92,15 @@ public class LembreteService {
         lembrete.setMensagem(dto.getMensagem());
         lembrete.setTimeSchedule(mapearTimeSchedule(dto.getDataVencimento()));
         lembrete.setPrioridade(dto.getPrioridade());
+        var dataAtualFormatada = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        var dataRecebidaFormatada = dto.getDataVencimento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        if (lembrete.getPrioridade() != 5) {
+            lembrete.setFinalizaHoje(false);
+        }
+        if (dto.getPrioridade() > 5 && dataAtualFormatada.equals(dataRecebidaFormatada)) {
+            lembrete.setFinalizaHoje(true);
+        }
+        log.info("Lembrete a ser salvo -> {}", lembrete);
         return lembrete;
     }
 

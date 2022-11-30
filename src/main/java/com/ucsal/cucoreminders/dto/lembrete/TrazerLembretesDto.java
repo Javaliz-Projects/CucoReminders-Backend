@@ -20,6 +20,7 @@ public class TrazerLembretesDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataVencimento;
     private Integer prioridade;
+    private boolean finalizaHoje;
 
     public TrazerLembretesDto(Lembrete lembreteEntity) {
         id = lembreteEntity.getId();
@@ -27,6 +28,7 @@ public class TrazerLembretesDto {
         mensagem = lembreteEntity.getMensagem();
         dataVencimento = lembreteEntity.getTimeSchedule().getDueDate();
         prioridade = lembreteEntity.getPrioridade();
+        finalizaHoje = lembreteEntity.isFinalizaHoje();
     }
 
 }

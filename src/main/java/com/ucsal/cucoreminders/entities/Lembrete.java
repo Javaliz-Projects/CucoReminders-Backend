@@ -21,6 +21,8 @@ public class Lembrete implements Comparator<Lembrete> {
     private String mensagem;
     private Integer prioridade;
 
+    private boolean finalizaHoje;
+
     public Lembrete() {
     }
 
@@ -79,6 +81,13 @@ public class Lembrete implements Comparator<Lembrete> {
         this.prioridade = prioridade;
     }
 
+    public boolean isFinalizaHoje() {
+        return finalizaHoje;
+    }
+
+    public void setFinalizaHoje(boolean finalizaHoje) {
+        this.finalizaHoje = finalizaHoje;
+    }
 
     @Override
     public int compare(Lembrete o1, Lembrete o2) {
