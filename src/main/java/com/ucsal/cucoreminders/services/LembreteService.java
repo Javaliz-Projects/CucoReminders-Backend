@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -95,12 +96,13 @@ public class LembreteService {
 
 
     private Lembrete atualizarAuxiliar(Long lembreteId, AtualizarLembreteDto dto) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         Lembrete lembrete = lembreteRepository.findById(lembreteId).orElseThrow(() -> new ResourceNotFoundException("Lembrete nao encontrado"));
         lembrete.setPrioridade(dto.getPrioridade() == null ? lembrete.getPrioridade() : dto.getPrioridade());
         lembrete.setTitulo(dto.getTitulo() == null || dto.getTitulo().isEmpty() ? lembrete.getTitulo() : dto.getTitulo());
         lembrete.setMensagem(dto.getMensagem() == null || dto.getMensagem().isEmpty() ? lembrete.getMensagem() : dto.getMensagem());
         var timeSchedule = lembrete.getTimeSchedule();
-        timeSchedule.setDueDate(dto.getDataVencimento() == null || dto.getDataVencimento().toString().isEmpty() ? timeSchedule.getDueDate() : dto.getDataVencimento());
+        timeSchedule.setDueDate(dto.getDataVencimento() == null || dto.getDataVencimento().isEmpty() ? timeSchedule.getDueDate() : LocalDateTime.parse(dto.getDataVencimento(),df));
         if (dto.getDataVencimento() == null) {
             return lembrete;
         }
@@ -108,9 +110,13 @@ public class LembreteService {
         return lembrete;
     }
 
-    private TimeSchedule mapearTimeSchedule(LocalDateTime dataVencimento) {
+    private TimeSchedule mapearTimeSchedule(String x) {
+        log.info("Data que veio do controller ->  {}", x);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         var timeScheduleEntity = new TimeSchedule();
-        timeScheduleEntity.setDueDate(dataVencimento);
+        var localDateTime = LocalDateTime.parse(x,df);
+        log.info("LocalDateTime => {}", localDateTime);
+        timeScheduleEntity.setDueDate(localDateTime);
         return timeScheduleEntity;
     }
 

@@ -22,10 +22,11 @@ public class InserirLembreteDto {
     @Min(value = 1,message = "O valor precisa ser maior que 0.")
     @Max(value = 9,message = "O valor precisa ser menor que 10.")
     private Integer prioridade;
-    @NotNull(message =  "Campo requerido")
-    @FutureOrPresent(message = "A data so pode ser presente ou futuro")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime dataVencimento;
+//    @NotNull(message =  "Campo requerido")
+//    @FutureOrPresent(message = "A data so pode ser presente ou futuro")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+//    private LocalDateTime dataVencimento;
+    private String dataVencimento;
 
 
     public InserirLembreteDto() {
@@ -61,11 +62,11 @@ public class InserirLembreteDto {
         this.mensagem = mensagem;
     }
 
-    public LocalDateTime getDataVencimento() {
+    public String getDataVencimento() {
         return dataVencimento;
     }
 
-    public void setDataVencimento(LocalDateTime dataVencimento) {
+    public void setDataVencimento(String dataVencimento) {
         this.dataVencimento = dataVencimento;
     }
 

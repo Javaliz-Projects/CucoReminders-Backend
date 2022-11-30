@@ -18,6 +18,7 @@ public class AtualizarLembreteDto {
     private String titulo;
     private String mensagem;
     private Integer prioridade;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
-    private LocalDateTime dataVencimento;
+    //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+//    private LocalDateTime dataVencimento;
+    private String dataVencimento;
 }
