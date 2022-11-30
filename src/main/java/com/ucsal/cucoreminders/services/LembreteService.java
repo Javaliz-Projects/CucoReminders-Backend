@@ -94,9 +94,9 @@ public class LembreteService {
         return lembrete;
     }
 
-
     private Lembrete atualizarAuxiliar(Long lembreteId, AtualizarLembreteDto dto) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
         Lembrete lembrete = lembreteRepository.findById(lembreteId).orElseThrow(() -> new ResourceNotFoundException("Lembrete nao encontrado"));
         lembrete.setPrioridade(dto.getPrioridade() == null ? lembrete.getPrioridade() : dto.getPrioridade());
         lembrete.setTitulo(dto.getTitulo() == null || dto.getTitulo().isEmpty() ? lembrete.getTitulo() : dto.getTitulo());
